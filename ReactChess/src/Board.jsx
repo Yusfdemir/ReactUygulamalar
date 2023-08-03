@@ -1,0 +1,26 @@
+import React from 'react'
+import SquareBoard from './SquareBoard'
+import Square from './Square'
+
+const Board = ({board}) => {
+    
+    const colorCntrl=(i)=>{
+        const x=i%8;
+        const y=Math.abs(Math.floor(i/8)-7)
+        return (x+y)%2 === 0
+    }
+  return (
+    <div className='w-[640px] h-[640px] bg-green-700 flex flex-wrap'>
+        {
+            //flat() metodu 8x8'lik arrayi  64'lük tek boyutlu arraya çevirir
+            board.flat().map((brd,i)=>(
+                <Square key={i} colorValue={colorCntrl(i)}>
+                   {brd && <SquareBoard brd={brd} />} 
+                </Square>
+            ))
+        }
+    </div>
+  )
+}
+
+export default Board
