@@ -1,9 +1,19 @@
 import React from 'react'
+import { useDrop } from 'react-dnd'
+import { move } from './Game'
 
-const Square = ({children,colorValue}) => {
+const Square = ({children,colorValue,positionCntrl}) => {
+  //console.log(positionCntrl)
+  const[,drop]=useDrop({
+    accept:'chess',
+    drop:(item)=>{
+      const[fromPosition]=item.id.split("_")
+      move(fromPosition,positionCntrl)
+    }
+  })
 
   return (
-    <div className={`${colorValue? 'bg-green-800':'bg-green-200'} w-[80px] h-[80px] flex items-center justify-center cursor-grab`} >{children}</div>
+    <div ref={drop} className={`${colorValue? 'bg-green-800':'bg-green-200'} w-[80px] h-[80px] flex items-center justify-center cursor-grab`} >{children}</div>
   )
 }
 

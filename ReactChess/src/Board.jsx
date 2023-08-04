@@ -9,13 +9,19 @@ const Board = ({board}) => {
         const y=Math.abs(Math.floor(i/8)-7)
         return (x+y)%2 === 0
     }
+    const positionCntrl=(i)=>{
+        const x=i%8;
+        const letters=["a","b","c","d","e","f","g","h"][x]
+        const y=Math.abs(Math.floor(i/8)-7)
+        return `${letters}${y+1}`;//a8,b6 gibi değerler döner
+    }
   return (
     <div className='w-[640px] h-[640px] bg-green-700 flex flex-wrap'>
         {
             //flat() metodu 8x8'lik arrayi  64'lük tek boyutlu arraya çevirir
             board.flat().map((brd,i)=>(
-                <Square key={i} colorValue={colorCntrl(i)}>
-                   {brd && <SquareBoard brd={brd} />} 
+                <Square key={i} colorValue={colorCntrl(i)} positionCntrl={positionCntrl(i)} >
+                   {brd && <SquareBoard brd={brd} positionCntrl={positionCntrl(i)} />} 
                 </Square>
             ))
         }
