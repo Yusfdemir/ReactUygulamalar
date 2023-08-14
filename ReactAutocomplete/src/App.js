@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-const data=[
+/*const data=[
   {
     id:1,
     title:"test 1"
@@ -18,10 +18,11 @@ const data=[
     id:4,
     title:"Deneme 1"
   }
-]
+]*/
 function App() {
   const [search,setSearch]=useState('')
   const [result,setResult]=useState(false)
+  const [loading,setLoading]=useState(false)
   const searchRef=useRef()
 
   const isTyping=search.replace(/\s+/,'').length>0;
@@ -41,21 +42,28 @@ function App() {
   }
   useEffect(()=>{
     if(isTyping){
-      const filteredResult=data.filter(item=>item.title.toLowerCase().includes(search.toLowerCase()));
-      setResult(filteredResult.length > 0 ? filteredResult : false)
+      // const filteredResult=data.filter(item=>item.title.toLowerCase().includes(search.toLowerCase()));
+      // setResult(filteredResult.length > 0 ? filteredResult : false)
+      setLoading(true)
+      const getData=setTimeout(() => {
+        fetch(`https://jsonplaceholder.typicode.com/comments?postId=${search}`)
+          .then(res=>res.json())
+          .then(data=>{
+            setResult(data.length>0 ? data : false)
+            setLoading(false)
+          })
+        
+      }, 500);
+  
+      return ()=>{
+        clearTimeout(getData)
+        setLoading(false)
+      }
     }else{
       setResult(false)
     }
 
-    const getData=setTimeout(() => {
-      fetch(`https://jsonplaceholder.typicode.com/comments?postId=${search}`)
-      .then(res=>res.json())
-      .then(data=>setResult(data))  
-    }, 500);
-
-    return ()=>{
-      clearTimeout(getData)
-    }
+    
 
   },[search])
 
@@ -71,7 +79,7 @@ function App() {
               {item.name}
             </div>
           ))}
-          {!result&& (
+          {!result && loading===false && (
             <div className='result-not-found'>
               "{search}" ile ilgili birşey bulamadık!
             </div>
