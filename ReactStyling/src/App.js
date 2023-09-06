@@ -3,6 +3,7 @@ import sytles from './App.module.css'; // styles obje olarak gelir
 import { Title } from "./Component";
 import Bootstrap from "./Bootstrap";
 import Tailwind from "./Tailwind";
+import './style.scss'
 
 function App() {
   return (
@@ -17,6 +18,10 @@ function App() {
       <Bootstrap/>
       <hr />
       <Tailwind/>
+      <hr />
+      <p className="scss">
+        <span className="scssin">scss ile style</span>
+      </p>
     </div>
   );
 }
